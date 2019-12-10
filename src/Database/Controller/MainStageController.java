@@ -11,6 +11,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -33,7 +35,7 @@ public class MainStageController implements Initializable {
 
     @FXML
     JFXButton btnLogin,btnUser, btnSignUp,btnBell, btnSearch;
-    public String UserID;
+    public String UserID = "None";
     @FXML
     JFXTextField txtSearch;
     @FXML
@@ -45,6 +47,11 @@ public class MainStageController implements Initializable {
     Label lblNoResult;
     @FXML
     JFXListView<Label> searchResult,subscribedChannel;
+
+    public void setUserID(String userID) {
+        UserID = userID;
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         btnLogin.setOnMouseClicked(actionEvent -> {
@@ -80,6 +87,7 @@ public class MainStageController implements Initializable {
                                 while (resultSet1.next()) {
                                     System.out.println(resultSet1.getString(2));
                                     Label lbl = new Label(resultSet1.getString(2));
+                                    lbl.setId("U"+resultSet1.getString(1));
                                     lbl.setGraphic(new ImageView(new Image(new FileInputStream("D:/Study/DB/src/Database/img/User.png"))));
                                     subscribedChannel.getItems().add(lbl);
                                 }
@@ -151,6 +159,7 @@ public class MainStageController implements Initializable {
                     }
                     System.out.println(resultSet.getString(2));
                     Label lbl = new Label(resultSet.getString(2)+ " - " + a + " người đăng ký");
+                    lbl.setId("U"+resultSet.getString(1));
                     lbl.setGraphic(new ImageView(new Image(new FileInputStream("D:/Study/DB/src/Database/img/User.png"))));
                     searchResult.getItems().add(lbl);
                 }
@@ -161,10 +170,78 @@ public class MainStageController implements Initializable {
                     }
                     System.out.println(resultSet1.getString(2));
                     Label lbl = new Label(resultSet1.getString(2)+ " \n" +resultSet1.getString(3)+" - " + a + " lượt xem");
+                    lbl.setId("V"+resultSet1.getString(1));
                     lbl.setGraphic(new ImageView(new Image(new FileInputStream("D:/Study/DB/src/Database/img/YoutubeVN.png"))));
                     searchResult.getItems().add(lbl);
                 }
             } catch (SQLException | FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void onClickedListView(MouseEvent mouseEvent) {
+        ListView<Label> list = (ListView<Label>) mouseEvent.getSource();
+        list.setCellFactory(tv->{
+            ListCell<Label> cell = new ListCell<>();
+            cell.setOnMouseClicked(event ->{
+                if ( !cell.isEmpty()) {
+                    Label cellData = cell.getItem();
+                    try {
+                        String CellID = cellData.getId();
+                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../fxml/OtherUser.fxml"));
+                        Parent root = (Parent) fxmlLoader.load();
+                        //Get controller of scene2
+                        System.out.println(CellID);
+                        System.out.println(UserID);
+                        OtherUserController inputController = fxmlLoader.getController();
+                        //Pass whatever data you want. You can have multiple method calls here
+                        inputController.setOtherUserID(CellID.substring(1,CellID.length()));
+                        inputController.setUserID(UserID);
+                        mainStage.getChildren().setAll(root);
+                        AnchorPane.setTopAnchor(root, 0.0);
+                        AnchorPane.setBottomAnchor(root, 0.0);
+                        AnchorPane.setLeftAnchor(root, 0.0);
+                        AnchorPane.setRightAnchor(root, 0.0);
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            return cell;
+        });
+    }
+    int i =0;
+    public void onMouseMoved(MouseEvent mouseEvent) {
+
+        if (!UserID.equals("None")&& i<1) {
+            i++;
+            subscribedChannel.getItems().clear();
+            btnLogin.setDisable(true);
+            btnSignUp.setDisable(true);
+            btnLogin.setVisible(false);
+            btnSignUp.setVisible(false);
+            btnBell.setDisable(false);
+            btnUser.setDisable(false);
+            btnBell.setVisible(true);
+            btnUser.setVisible(true);
+            ConnectionClass connectionClass = new ConnectionClass();
+            Connection con = connectionClass.getConnection();
+
+            try{
+                sql = "CALL show_ChannelSubcribe(" + UserID + ",@a);";
+                statement = con.createStatement();
+                ResultSet resultSet1 = statement.executeQuery(sql);
+                while (resultSet1.next()) {
+                    System.out.println(resultSet1.getString(2));
+                    Label lbl = new Label(resultSet1.getString(2));
+                    lbl.setId("U"+resultSet1.getString(1));
+                    lbl.setGraphic(new ImageView(new Image(new FileInputStream("D:/Study/DB/src/Database/img/User.png"))));
+                    subscribedChannel.getItems().add(lbl);
+                }
+                subscribedChannel.setVisible(true);
+            }catch(Exception e){
                 e.printStackTrace();
             }
         }

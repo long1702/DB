@@ -11,6 +11,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -31,7 +33,7 @@ import java.util.ResourceBundle;
 
 public class OtherUserController implements Initializable {
     @FXML
-    JFXButton btnLogin,btnSignUp,btnBell, btnUser,btnSubscribe;
+    JFXButton btnLogin,btnSignUp,btnBell, btnUser,btnSubscribe,btnSearch,btnMain;
     @FXML
     AnchorPane mainStage;
     String UserID = "None";
@@ -41,33 +43,24 @@ public class OtherUserController implements Initializable {
     Statement statement;
     String sql;
     @FXML
-    Label lblNoResult;
+    Label lblNoResult,lblUserName,lblSubNum;
     @FXML
     JFXListView<Label> searchResult, subscribedChannel;
     @FXML
     VBox vboxDisplay;
+
+    public void setOtherUserID(String otherUserID) {
+        OtherUserID = otherUserID;
+    }
+
+    public void setUserID(String userID) {
+        UserID = userID;
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        if (UserID != "None") {
-            ConnectionClass connectionClass = new ConnectionClass();
-            Connection con = connectionClass.getConnection();
-            try {
-                sql = "SELECT * FROM Subcribe WHERE SubcriberID = " + UserID + ";";
-                statement = con.createStatement();
-                ResultSet resultSet = statement.executeQuery(sql);
-                while (resultSet.next()) {
-                    if (OtherUserID.equals(resultSet.getString(2))) {
-                        btnSubscribe.setText("ĐÃ ĐĂNG KÝ");
-                        btnSubscribe.setDisable(true);
-                        break;
-                    }
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-        }
+        System.out.println(UserID);
+        btnSearch.setDisable(true);
         btnLogin.setOnMouseClicked(actionEvent -> {
             try{
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../fxml/LoginScreen.fxml"));
@@ -115,7 +108,22 @@ public class OtherUserController implements Initializable {
                 e.printStackTrace();
             }
         });
-
+        btnMain.setOnMouseClicked(actionEvent->{
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../fxml/MainStage.fxml"));
+                Parent root = (Parent)fxmlLoader.load();
+                MainStageController inputController = fxmlLoader.getController();
+                //Pass whatever data you want. You can have multiple method calls here
+                inputController.setUserID(UserID);
+                mainStage.getChildren().setAll(root);
+                AnchorPane.setTopAnchor(root, 0.0);
+                AnchorPane.setBottomAnchor(root, 0.0);
+                AnchorPane.setLeftAnchor(root, 0.0);
+                AnchorPane.setRightAnchor(root, 0.0);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     public void onbtnSearchClicked(MouseEvent mouseEvent) {
@@ -141,6 +149,7 @@ public class OtherUserController implements Initializable {
                     }
                     System.out.println(resultSet.getString(2));
                     Label lbl = new Label(resultSet.getString(2)+ " - " + a + " người đăng ký");
+                    lbl.setId("U" + resultSet.getString(1));
                     lbl.setGraphic(new ImageView(new Image(new FileInputStream("D:/Study/DB/src/Database/img/User.png"))));
                     searchResult.getItems().add(lbl);
                 }
@@ -151,6 +160,7 @@ public class OtherUserController implements Initializable {
                     }
                     System.out.println(resultSet1.getString(2));
                     Label lbl = new Label(resultSet1.getString(2)+ " \n" +resultSet1.getString(3)+" - " + a + " lượt xem");
+                    lbl.setId("V" + resultSet1.getString(1));
                     lbl.setGraphic(new ImageView(new Image(new FileInputStream("D:/Study/DB/src/Database/img/YoutubeVN.png"))));
                     searchResult.getItems().add(lbl);
                 }
@@ -255,4 +265,69 @@ public class OtherUserController implements Initializable {
             er.printStackTrace();
         }
     }
+    int i = 0;
+    public void onMouseMoved(MouseEvent mouseEvent) throws SQLException {
+        if(i<1){
+            i++;
+            ConnectionClass connectionClass = new ConnectionClass();
+            Connection con = connectionClass.getConnection();
+            if (UserID != "None" ) {
+                btnLogin.setDisable(true);
+                btnSignUp.setDisable(true);
+                btnLogin.setVisible(false);
+                btnSignUp.setVisible(false);
+                btnBell.setDisable(false);
+                btnUser.setDisable(false);
+                btnBell.setVisible(true);
+                btnUser.setVisible(true);
+                System.out.println(OtherUserID);
+                try{
+                    sql = "CALL show_ChannelSubcribe(" + UserID + ",@a);";
+                    statement = con.createStatement();
+                    ResultSet resultSet1 = statement.executeQuery(sql);
+                    while (resultSet1.next()) {
+                        System.out.println(resultSet1.getString(2));
+                        Label lbl = new Label(resultSet1.getString(2));
+                        lbl.setId("U" + resultSet1.getString(1));
+                        lbl.setGraphic(new ImageView(new Image(new FileInputStream("D:/Study/DB/src/Database/img/User.png"))));
+                        subscribedChannel.getItems().add(lbl);
+                    }
+                    subscribedChannel.setVisible(true);
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+                try {
+                    sql = "SELECT * FROM Subcribe WHERE SubcriberID = " + UserID + ";";
+                    statement = con.createStatement();
+                    ResultSet resultSet = statement.executeQuery(sql);
+                    while (resultSet.next()) {
+                        if (OtherUserID.equals(resultSet.getString(2))) {
+                            btnSubscribe.setText("ĐÃ ĐĂNG KÝ");
+                            btnSubscribe.setDisable(true);
+                            break;
+                        }
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+            sql = "CALL get_user_info("+OtherUserID+");";
+            statement = con.createStatement();
+            ResultSet resultSet1 =statement.executeQuery(sql);
+            while(resultSet1.next()) {
+                lblUserName.setText(resultSet1.getString(1));
+                String a = resultSet1.getString(2);
+                if (a == null) {
+                    a = "0";
+                }
+                lblSubNum.setText(a + " đã đăng ký");
+            }
+        }
+    }
+    public void onClickedListView(MouseEvent mouseEvent) {
+
+    }
+
 }

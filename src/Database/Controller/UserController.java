@@ -10,6 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -27,11 +28,13 @@ import java.util.ResourceBundle;
 
 public class UserController implements Initializable {
     @FXML
-    JFXButton btnUpload,btnUser,btnSearch;
+    JFXButton btnUpload,btnUser,btnSearch,btnMain;
     @FXML
     JFXTextField txtSearch;
     @FXML
     Label lblNoResult;
+    @FXML
+    AnchorPane mainStage;
     @FXML
     VBox vboxDisplay;
     @FXML
@@ -40,7 +43,7 @@ public class UserController implements Initializable {
     Label lblSubNum,lblUserName;
     Statement statement;
     String sql;
-    private String UserID;
+    private String UserID = "None";
 
     public void setUserID(String userID) {
         UserID = userID;
@@ -48,23 +51,22 @@ public class UserController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        ConnectionClass connectionClass = new ConnectionClass();
-        Connection con = connectionClass.getConnection();
-        subscribedChannel.setVisible(true);
-        try {
-            sql = "CALL show_ChannelSubcribe("+UserID+",@a);";
-            statement = con.createStatement();
-            ResultSet resultSet = statement.executeQuery(sql);
-            while (resultSet.next()) {
-                System.out.println(resultSet.getString(2));
-                Label lbl = new Label(resultSet.getString(2));
-                lbl.setGraphic(new ImageView(new Image(new FileInputStream("D:/Study/DB/src/Database/img/User.png"))));
-                subscribedChannel.getItems().add(lbl);
+        btnMain.setOnMouseClicked(actionEvent->{
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../fxml/MainStage.fxml"));
+                Parent root = (Parent)fxmlLoader.load();
+                MainStageController inputController = fxmlLoader.getController();
+                //Pass whatever data you want. You can have multiple method calls here
+                inputController.setUserID(UserID);
+                mainStage.getChildren().setAll(root);
+                AnchorPane.setTopAnchor(root, 0.0);
+                AnchorPane.setBottomAnchor(root, 0.0);
+                AnchorPane.setLeftAnchor(root, 0.0);
+                AnchorPane.setRightAnchor(root, 0.0);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (SQLException | FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
+        });
     }
     public void onbtnUserClicked(MouseEvent mouseEvent) {
     }
@@ -82,23 +84,7 @@ public class UserController implements Initializable {
     }
 
     public void onbtnLeave(MouseEvent mouseEvent) {
-        ConnectionClass connectionClass = new ConnectionClass();
-        Connection con = connectionClass.getConnection();
-        try {
-            sql = "CALL get_user_info("+UserID+");";
-            statement = con.createStatement();
-            ResultSet resultSet =statement.executeQuery(sql);
-            while(resultSet.next()) {
-                lblUserName.setText(resultSet.getString(1));
-                String a = resultSet.getString(2) ;
-                if (a == null) {
-                    a = "0";
-                }
-                lblSubNum.setText(a+ " đã đăng ký");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+
     }
 
     public void onbtnSearchClicked(MouseEvent mouseEvent) {
@@ -124,6 +110,7 @@ public class UserController implements Initializable {
                     }
                     System.out.println(resultSet.getString(2));
                     Label lbl = new Label(resultSet.getString(2)+ " - " + a + " người đăng ký");
+                    lbl.setId("U" + resultSet.getString(1));
                     lbl.setGraphic(new ImageView(new Image(new FileInputStream("D:/Study/DB/src/Database/img/User.png"))));
                     searchResult.getItems().add(lbl);
                 }
@@ -134,6 +121,7 @@ public class UserController implements Initializable {
                     }
                     System.out.println(resultSet1.getString(2));
                     Label lbl = new Label(resultSet1.getString(2)+ " \n" +resultSet1.getString(3)+" - " + a + " lượt xem");
+                    lbl.setId("V" + resultSet1.getString(1));
                     lbl.setGraphic(new ImageView(new Image(new FileInputStream("D:/Study/DB/src/Database/img/YoutubeVN.png"))));
                     searchResult.getItems().add(lbl);
                 }
@@ -142,4 +130,76 @@ public class UserController implements Initializable {
             }
         }
     }
+
+    public void onClickedListView(MouseEvent mouseEvent) {
+        ListView<Label> list = (ListView<Label>) mouseEvent.getSource();
+        list.setCellFactory(tv->{
+            ListCell<Label> cell = new ListCell<>();
+            cell.setOnMouseClicked(event ->{
+                if ( !cell.isEmpty()) {
+                    Label cellData = cell.getItem();
+                    try {
+                        String CellID = cellData.getId();
+                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../fxml/OtherUser.fxml"));
+                        Parent root = (Parent) fxmlLoader.load();
+                        //Get controller of scene2
+                        System.out.println(CellID);
+                        System.out.println(UserID);
+                        OtherUserController inputController = fxmlLoader.getController();
+                        //Pass whatever data you want. You can have multiple method calls here
+                        inputController.setOtherUserID(CellID.substring(1,CellID.length()));
+                        inputController.setUserID(UserID);
+                        mainStage.getChildren().setAll(root);
+                        AnchorPane.setTopAnchor(root, 0.0);
+                        AnchorPane.setBottomAnchor(root, 0.0);
+                        AnchorPane.setLeftAnchor(root, 0.0);
+                        AnchorPane.setRightAnchor(root, 0.0);
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            return cell;
+        });
+    }
+    int i =0;
+    public void onMouseMoved(MouseEvent mouseEvent) {
+        if(i<1){
+            i++;
+            ConnectionClass connectionClass = new ConnectionClass();
+            Connection con = connectionClass.getConnection();
+            try {
+                sql = "CALL get_user_info("+UserID+");";
+                statement = con.createStatement();
+                ResultSet resultSet =statement.executeQuery(sql);
+                while(resultSet.next()) {
+                    lblUserName.setText(resultSet.getString(1));
+                    String a = resultSet.getString(2) ;
+                    if (a == null) {
+                        a = "0";
+                    }
+                    lblSubNum.setText(a+ " đã đăng ký");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            subscribedChannel.setVisible(true);
+            try {
+                sql = "CALL show_ChannelSubcribe("+UserID+",@a);";
+                statement = con.createStatement();
+                ResultSet resultSet = statement.executeQuery(sql);
+                while (resultSet.next()) {
+                    System.out.println(resultSet.getString(2));
+                    Label lbl = new Label(resultSet.getString(2));
+                    lbl.setId("U" + resultSet.getString(1));
+                    lbl.setGraphic(new ImageView(new Image(new FileInputStream("D:/Study/DB/src/Database/img/User.png"))));
+                    subscribedChannel.getItems().add(lbl);
+                }
+            } catch (SQLException | FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
+
