@@ -149,16 +149,17 @@
                            </graphic>
                         </JFXButton>
                         <Line endX="41.87336730957031" endY="-39.032501220703125" startX="207.56625366210938" startY="-39.03258514404297" />
-                        <JFXButton alignment="CENTER" mnemonicParsing="false" prefHeight="28.0" prefWidth="176.0" text="KÊNH ĐĂNG KÝ">
+                        <JFXButton alignment="CENTER" mnemonicParsing="false" prefHeight="26.0" prefWidth="167.0" text="KÊNH ĐĂNG KÝ">
                            <font>
                               <Font name="Roboto" size="12.0" />
                            </font>
                         </JFXButton>
+                        <JFXListView fx:id="subscribedChannel" visible="false" />
                      </children>
                   </VBox>
                   <Pane prefHeight="550.0" prefWidth="745.0">
                      <children>
-                        <VBox prefHeight="550.0" prefWidth="734.0">
+                        <VBox fx:id="vboxDisplay" prefHeight="550.0" prefWidth="734.0">
                            <children>
                               <Pane prefHeight="172.0" prefWidth="734.0" style="-fx-background-color: #ffffff;">
                                  <children>

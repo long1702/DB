@@ -44,7 +44,7 @@ public class MainStageController implements Initializable {
     @FXML
     Label lblNoResult;
     @FXML
-    JFXListView<Label> searchResult;
+    JFXListView<Label> searchResult,subscribedChannel;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         btnLogin.setOnMouseClicked(actionEvent -> {
@@ -70,6 +70,23 @@ public class MainStageController implements Initializable {
                             btnUser.setDisable(false);
                             btnBell.setVisible(true);
                             btnUser.setVisible(true);
+                            ConnectionClass connectionClass = new ConnectionClass();
+                            Connection con = connectionClass.getConnection();
+
+                            try{
+                                sql = "CALL show_ChannelSubcribe(" + UserID + ",@a);";
+                                statement = con.createStatement();
+                                ResultSet resultSet1 = statement.executeQuery(sql);
+                                while (resultSet1.next()) {
+                                    System.out.println(resultSet1.getString(2));
+                                    Label lbl = new Label(resultSet1.getString(2));
+                                    lbl.setGraphic(new ImageView(new Image(new FileInputStream("D:/Study/DB/src/Database/img/User.png"))));
+                                    subscribedChannel.getItems().add(lbl);
+                                }
+                                subscribedChannel.setVisible(true);
+                            }catch(Exception e){
+                                e.printStackTrace();
+                            }
                         }
                     }
                 });

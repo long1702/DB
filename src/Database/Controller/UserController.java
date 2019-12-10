@@ -2,6 +2,7 @@ package Database.Controller;
 
 import Database.Connector.ConnectionClass;
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextField;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,6 +15,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.FileInputStream;
@@ -31,7 +33,9 @@ public class UserController implements Initializable {
     @FXML
     Label lblNoResult;
     @FXML
-    ListView<Label> searchResult;
+    VBox vboxDisplay;
+    @FXML
+    JFXListView<Label> searchResult,subscribedChannel;
     @FXML
     Label lblSubNum,lblUserName;
     Statement statement;
@@ -44,6 +48,22 @@ public class UserController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        ConnectionClass connectionClass = new ConnectionClass();
+        Connection con = connectionClass.getConnection();
+        subscribedChannel.setVisible(true);
+        try {
+            sql = "CALL show_ChannelSubcribe("+UserID+",@a);";
+            statement = con.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {
+                System.out.println(resultSet.getString(2));
+                Label lbl = new Label(resultSet.getString(2));
+                lbl.setGraphic(new ImageView(new Image(new FileInputStream("D:/Study/DB/src/Database/img/User.png"))));
+                subscribedChannel.getItems().add(lbl);
+            }
+        } catch (SQLException | FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
     }
     public void onbtnUserClicked(MouseEvent mouseEvent) {
@@ -80,8 +100,11 @@ public class UserController implements Initializable {
             e.printStackTrace();
         }
     }
+
     public void onbtnSearchClicked(MouseEvent mouseEvent) {
         if(txtSearch.getText() != null) {
+            vboxDisplay.setDisable(true);
+            vboxDisplay.setVisible(false);
             ConnectionClass connectionClass = new ConnectionClass();
             Connection con = connectionClass.getConnection();
             try {

@@ -38,7 +38,7 @@
                         </ImageView>
                      </graphic>
                   </JFXButton>
-                  <JFXButton fx:id="btnUser" layoutX="783.0" layoutY="3.0" onMouseClicked="#onbtnUserClicked" onMouseExited="#onbtnLeave" text=" ">
+                  <JFXButton fx:id="btnUser" disable="true" layoutX="783.0" layoutY="3.0" onMouseClicked="#onbtnUserClicked" text=" " visible="false">
                      <graphic>
                         <ImageView fitHeight="36.0" fitWidth="41.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -47,7 +47,7 @@
                         </ImageView>
                      </graphic>
                   </JFXButton>
-                  <JFXButton layoutX="730.0" layoutY="9.0" text=" ">
+                  <JFXButton fx:id="btnBell" disable="true" layoutX="730.0" layoutY="9.0" text=" " visible="false">
                      <graphic>
                         <ImageView fitHeight="23.0" fitWidth="23.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -57,6 +57,16 @@
                      </graphic>
                   </JFXButton>
                   <JFXTextField fx:id="txtSearch" layoutX="216.0" layoutY="13.0" prefHeight="25.0" prefWidth="383.0" promptText="Tìm kiếm" />
+                  <JFXButton fx:id="btnLogin" alignment="CENTER" layoutX="682.0" layoutY="12.0" onMouseClicked="#onbtnLoginClicked" prefHeight="27.0" prefWidth="102.0" style="-fx-border-color: #0000FF;" text="ĐĂNG NHẬP" textFill="#2b00ff">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton fx:id="btnSignUp" alignment="CENTER" layoutX="792.0" layoutY="12.0" onMouseClicked="#onbtnSignUpClicked" prefHeight="27.0" prefWidth="102.0" style="-fx-border-color: #0000FF;" text="ĐĂNG KÝ" textFill="#2b00ff">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </JFXButton>
                </children>
             </Pane>
             <HBox prefHeight="550.0" prefWidth="900.0">
@@ -154,11 +164,12 @@
                               <Font name="Roboto" size="12.0" />
                            </font>
                         </JFXButton>
+                        <JFXListView fx:id="subscribedChannel" visible="false" />
                      </children>
                   </VBox>
                   <Pane prefHeight="550.0" prefWidth="740.0">
                      <children>
-                        <VBox prefHeight="550.0" prefWidth="734.0">
+                        <VBox fx:id="vboxDisplay" prefHeight="550.0" prefWidth="734.0">
                            <children>
                               <Pane prefHeight="172.0" prefWidth="707.0" style="-fx-background-color: #ffffff;">
                                  <children>
@@ -177,7 +188,7 @@
                                           <Font size="18.0" />
                                        </font>
                                     </Label>
-                                    <JFXButton fx:id="btnUpload" layoutX="545.0" layoutY="98.0" onMouseClicked="#onbtnUploadClicked" prefHeight="36.0" prefWidth="123.0" stylesheets="@../StyleSheet/OverAll.css" text="ĐĂNG KÝ">
+                                    <JFXButton fx:id="btnSubscribe" layoutX="545.0" layoutY="98.0" onMouseClicked="#onbtnSubscribeClicked" prefHeight="36.0" prefWidth="123.0" stylesheets="@../StyleSheet/OverAll.css" text="ĐĂNG KÝ">
                                        <font>
                                           <Font name="System Bold" size="15.0" />
                                        </font>

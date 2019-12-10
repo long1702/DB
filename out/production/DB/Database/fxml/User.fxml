@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXListView?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
@@ -28,7 +29,7 @@
                         <Image url="@../img/YoutubeVN.png" />
                      </image>
                   </ImageView>
-                  <JFXButton alignment="CENTER" layoutX="616.0" layoutY="12.0" prefHeight="28.0" prefWidth="46.0" style="-fx-background-color: #EDEDED;" text=" ">
+                  <JFXButton fx:id="btnSearch" alignment="CENTER" layoutX="616.0" layoutY="12.0" onMouseClicked="#onbtnSearchClicked" prefHeight="28.0" prefWidth="46.0" style="-fx-background-color: #EDEDED;" text=" ">
                      <graphic>
                         <ImageView fitHeight="17.0" fitWidth="66.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -55,6 +56,7 @@
                         </ImageView>
                      </graphic>
                   </JFXButton>
+                  <JFXTextField fx:id="txtSearch" layoutX="216.0" layoutY="13.0" prefHeight="25.0" prefWidth="383.0" promptText="Tìm kiếm" />
                </children>
             </Pane>
             <HBox prefHeight="550.0" prefWidth="900.0">
@@ -147,96 +149,108 @@
                            </graphic>
                         </JFXButton>
                         <Line endX="41.87336730957031" endY="-39.032501220703125" startX="207.56625366210938" startY="-39.03258514404297" />
-                        <JFXButton alignment="CENTER" mnemonicParsing="false" prefHeight="28.0" prefWidth="176.0" text="KÊNH ĐĂNG KÝ">
+                        <JFXButton alignment="CENTER" mnemonicParsing="false" prefHeight="26.0" prefWidth="167.0" text="KÊNH ĐĂNG KÝ">
                            <font>
                               <Font name="Roboto" size="12.0" />
                            </font>
                         </JFXButton>
+                        <JFXListView fx:id="subscribedChannel" visible="false" />
                      </children>
                   </VBox>
-                  <VBox prefHeight="550.0" prefWidth="734.0">
+                  <Pane prefHeight="550.0" prefWidth="745.0">
                      <children>
-                        <Pane prefHeight="172.0" prefWidth="734.0" style="-fx-background-color: #ffffff;">
+                        <VBox fx:id="vboxDisplay" prefHeight="550.0" prefWidth="734.0">
                            <children>
-                              <ImageView fitHeight="120.0" fitWidth="128.0" layoutX="14.0" layoutY="31.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../img/User.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="lblUserName" layoutX="180.0" layoutY="41.0" prefHeight="44.0" prefWidth="123.0">
-                                 <font>
-                                    <Font size="28.0" />
-                                 </font></Label>
-                              <Label fx:id="lblSubNum" layoutX="180.0" layoutY="91.0" prefHeight="44.0" prefWidth="123.0">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font></Label>
-                              <JFXButton fx:id="btnSetting" layoutX="408.0" layoutY="100.0" prefHeight="36.0" prefWidth="154.0" stylesheets="@../StyleSheet/OverAll.css" text="  TÙY CHỈNH">
-                                 <font>
-                                    <Font name="System Bold" size="15.0" />
-                                 </font>
-                                 <graphic>
-                                    <ImageView fitHeight="33.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                              <Pane prefHeight="172.0" prefWidth="734.0" style="-fx-background-color: #ffffff;">
+                                 <children>
+                                    <ImageView fitHeight="120.0" fitWidth="128.0" layoutX="14.0" layoutY="31.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../img/settings.png" />
+                                          <Image url="@../img/User.png" />
                                        </image>
                                     </ImageView>
-                                 </graphic>
-                              </JFXButton>
-                              <JFXButton fx:id="btnUpload" layoutX="566.0" layoutY="100.0" onMouseClicked="#onbtnUploadClicked" prefHeight="36.0" prefWidth="154.0" stylesheets="@../StyleSheet/OverAll.css" text="  UPLOAD">
-                                 <font>
-                                    <Font name="System Bold" size="15.0" />
-                                 </font>
-                                 <graphic>
-                                    <ImageView fitHeight="33.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../img/arrow-up.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                              </JFXButton>
+                                    <Label fx:id="lblUserName" layoutX="180.0" layoutY="41.0" prefHeight="44.0" prefWidth="123.0">
+                                       <font>
+                                          <Font size="28.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="lblSubNum" layoutX="180.0" layoutY="91.0" prefHeight="44.0" prefWidth="123.0">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <JFXButton fx:id="btnSetting" layoutX="408.0" layoutY="100.0" prefHeight="36.0" prefWidth="154.0" stylesheets="@../StyleSheet/OverAll.css" text="  TÙY CHỈNH">
+                                       <font>
+                                          <Font name="System Bold" size="15.0" />
+                                       </font>
+                                       <graphic>
+                                          <ImageView fitHeight="33.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../img/settings.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </JFXButton>
+                                    <JFXButton fx:id="btnUpload" layoutX="566.0" layoutY="100.0" onMouseClicked="#onbtnUploadClicked" prefHeight="36.0" prefWidth="154.0" stylesheets="@../StyleSheet/OverAll.css" text="  UPLOAD">
+                                       <font>
+                                          <Font name="System Bold" size="15.0" />
+                                       </font>
+                                       <graphic>
+                                          <ImageView fitHeight="33.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../img/arrow-up.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </JFXButton>
+                                 </children>
+                              </Pane>
+                              <HBox prefHeight="50.0" prefWidth="734.0">
+                                 <children>
+                                    <JFXButton alignment="BOTTOM_CENTER" prefHeight="50.0" prefWidth="62.0" text=" ">
+                                       <font>
+                                          <Font name="System Bold" size="13.0" />
+                                       </font>
+                                    </JFXButton>
+                                    <JFXButton alignment="BOTTOM_CENTER" prefHeight="50.0" prefWidth="122.0" text="TRANG CHỦ">
+                                       <font>
+                                          <Font name="System Bold" size="13.0" />
+                                       </font>
+                                    </JFXButton>
+                                    <JFXButton alignment="BOTTOM_CENTER" prefHeight="50.0" prefWidth="82.0" text="VIDEO">
+                                       <font>
+                                          <Font name="System Bold" size="13.0" />
+                                       </font>
+                                    </JFXButton>
+                                    <JFXButton alignment="BOTTOM_CENTER" prefHeight="50.0" prefWidth="142.0" text="DANH SÁCH PHÁT">
+                                       <font>
+                                          <Font name="System Bold" size="13.0" />
+                                       </font>
+                                    </JFXButton>
+                                    <JFXButton alignment="BOTTOM_CENTER" prefHeight="50.0" prefWidth="102.0" text="KÊNH">
+                                       <font>
+                                          <Font name="System Bold" size="13.0" />
+                                       </font>
+                                    </JFXButton>
+                                    <JFXButton alignment="BOTTOM_CENTER" prefHeight="50.0" prefWidth="146.0" text="CUỘC THẢO LUẬN">
+                                       <font>
+                                          <Font name="System Bold" size="13.0" />
+                                       </font>
+                                    </JFXButton>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                        <Pane prefHeight="550.0" prefWidth="532.0">
+                           <children>
+                              <JFXListView fx:id="searchResult" disable="true" prefHeight="550.0" prefWidth="532.0" visible="false" />
+                              <Label fx:id="lblNoResult" layoutX="144.0" layoutY="198.0" prefHeight="27.0" prefWidth="215.0" text="Không tìm thấy kết quả" visible="false" />
                            </children>
                         </Pane>
-                        <HBox prefHeight="50.0" prefWidth="734.0">
-                           <children>
-                              <JFXButton alignment="BOTTOM_CENTER" prefHeight="50.0" prefWidth="62.0" text=" ">
-                                 <font>
-                                    <Font name="System Bold" size="13.0" />
-                                 </font>
-                              </JFXButton>
-                              <JFXButton alignment="BOTTOM_CENTER" prefHeight="50.0" prefWidth="122.0" text="TRANG CHỦ">
-                                 <font>
-                                    <Font name="System Bold" size="13.0" />
-                                 </font>
-                              </JFXButton>
-                              <JFXButton alignment="BOTTOM_CENTER" prefHeight="50.0" prefWidth="82.0" text="VIDEO">
-                                 <font>
-                                    <Font name="System Bold" size="13.0" />
-                                 </font>
-                              </JFXButton>
-                              <JFXButton alignment="BOTTOM_CENTER" prefHeight="50.0" prefWidth="142.0" text="DANH SÁCH PHÁT">
-                                 <font>
-                                    <Font name="System Bold" size="13.0" />
-                                 </font>
-                              </JFXButton>
-                              <JFXButton alignment="BOTTOM_CENTER" prefHeight="50.0" prefWidth="102.0" text="KÊNH">
-                                 <font>
-                                    <Font name="System Bold" size="13.0" />
-                                 </font>
-                              </JFXButton>
-                              <JFXButton alignment="BOTTOM_CENTER" prefHeight="50.0" prefWidth="146.0" text="CUỘC THẢO LUẬN">
-                                 <font>
-                                    <Font name="System Bold" size="13.0" />
-                                 </font>
-                              </JFXButton>
-                           </children>
-                        </HBox>
                      </children>
-                  </VBox>
+                  </Pane>
                </children>
             </HBox>
          </children>
       </VBox>
-      <JFXTextField fx:id="txtSearch" layoutX="216.0" layoutY="13.0" prefHeight="25.0" prefWidth="383.0" promptText="Tìm kiếm" />
    </children>
 </AnchorPane>
