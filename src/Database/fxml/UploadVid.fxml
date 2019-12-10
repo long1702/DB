@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXCheckBox?>
+<?import com.jfoenix.controls.JFXRadioButton?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Database.Controller.UpLoadVidController">
+   <children>
+      <Pane prefHeight="400.0" prefWidth="600.0">
+         <children>
+            <JFXButton layoutX="88.0" layoutY="52.0" stylesheets="@../StyleSheet/OverAll.css" text=" Chọn File Tải Lên">
+               <graphic>
+                  <ImageView fitHeight="18.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../img/arrow-up.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </JFXButton>
+            <TextField layoutX="32.0" layoutY="125.0" prefHeight="25.0" prefWidth="233.0" promptText=" Tên Video" />
+            <TextField alignment="TOP_LEFT" layoutX="32.0" layoutY="181.0" prefHeight="173.0" prefWidth="233.0" promptText="Mô tả" />
+            <Line endX="-41.79998779296875" endY="329.0" layoutX="343.0" layoutY="71.0" startX="-41.79998779296875" startY="-71.0" />
+            <Label layoutX="317.0" layoutY="44.0" prefHeight="25.0" prefWidth="133.0" text="Loại video của bạn:">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <JFXCheckBox layoutX="319.0" layoutY="75.0" text="Âm Nhạc" />
+            <JFXCheckBox layoutX="410.0" layoutY="74.0" text="Trò Chơi" />
+            <JFXCheckBox layoutX="498.0" layoutY="74.0" text="Làm Đẹp" />
+            <JFXCheckBox layoutX="319.0" layoutY="105.0" text="Cuộc sống" />
+            <JFXCheckBox layoutX="410.0" layoutY="104.0" text="Ẩm thực" />
+            <JFXCheckBox layoutX="498.0" layoutY="103.0" text="Chính kịch" />
+            <JFXCheckBox layoutX="319.0" layoutY="136.0" text="Hoạt hình" />
+            <JFXCheckBox layoutX="410.0" layoutY="135.0" text="Thể thao" />
+            <JFXCheckBox layoutX="498.0" layoutY="134.0" text="Thiên nhiên" />
+            <JFXCheckBox layoutX="410.0" layoutY="164.0" text="Khác" />
+            <Label layoutX="317.0" layoutY="228.0" prefHeight="25.0" prefWidth="133.0" text="Chế độ của video:">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <JFXRadioButton layoutX="317.0" layoutY="268.0" text="Công khai" />
+            <JFXRadioButton layoutX="440.0" layoutY="268.0" text="Riêng tư" />
+            <JFXButton layoutX="350.0" layoutY="341.0" prefHeight="25.0" prefWidth="51.0" stylesheets="@../StyleSheet/OverAll.css" text="OK" />
+            <JFXButton layoutX="476.0" layoutY="341.0" prefHeight="27.0" prefWidth="58.0" stylesheets="@../StyleSheet/OverAll.css" text="Cancel" />
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>
