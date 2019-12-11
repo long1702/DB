@@ -116,6 +116,7 @@ public class MainStageController implements Initializable {
             stage.setScene(new Scene(root, 450, 300));
             stage.show();
 
+
         } catch (Exception er) {
             er.printStackTrace();
         }
@@ -189,20 +190,38 @@ public class MainStageController implements Initializable {
                     Label cellData = cell.getItem();
                     try {
                         String CellID = cellData.getId();
-                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../fxml/OtherUser.fxml"));
-                        Parent root = (Parent) fxmlLoader.load();
-                        //Get controller of scene2
-                        System.out.println(CellID);
-                        System.out.println(UserID);
-                        OtherUserController inputController = fxmlLoader.getController();
-                        //Pass whatever data you want. You can have multiple method calls here
-                        inputController.setOtherUserID(CellID.substring(1,CellID.length()));
-                        inputController.setUserID(UserID);
-                        mainStage.getChildren().setAll(root);
-                        AnchorPane.setTopAnchor(root, 0.0);
-                        AnchorPane.setBottomAnchor(root, 0.0);
-                        AnchorPane.setLeftAnchor(root, 0.0);
-                        AnchorPane.setRightAnchor(root, 0.0);
+
+                        if(CellID.substring(0,1).equals("V")) {
+                            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../fxml/VideoDisplay.fxml"));
+                            Parent root = (Parent)fxmlLoader.load();
+                            //Get controller of scene2
+                            System.out.println(CellID);
+                            System.out.println(UserID);
+                            VideoDisplayController inputController = fxmlLoader.getController();
+                            inputController.setVideoID(CellID.substring(1,CellID.length()));
+                            inputController.setUserID(UserID);
+                            mainStage.getChildren().setAll(root);
+                            AnchorPane.setTopAnchor(root, 0.0);
+                            AnchorPane.setBottomAnchor(root, 0.0);
+                            AnchorPane.setLeftAnchor(root, 0.0);
+                            AnchorPane.setRightAnchor(root, 0.0);
+                        }
+                        else{
+                            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../fxml/OtherUser.fxml"));
+                            Parent root = (Parent)fxmlLoader.load();
+                            //Get controller of scene2
+                            System.out.println(CellID);
+                            System.out.println(UserID);
+                            OtherUserController inputController = fxmlLoader.getController();
+                            inputController.setOtherUserID(CellID.substring(1,CellID.length()));
+                            inputController.setUserID(UserID);
+                            mainStage.getChildren().setAll(root);
+                            AnchorPane.setTopAnchor(root, 0.0);
+                            AnchorPane.setBottomAnchor(root, 0.0);
+                            AnchorPane.setLeftAnchor(root, 0.0);
+                            AnchorPane.setRightAnchor(root, 0.0);
+                        }
+
 
                     } catch (Exception e) {
                         e.printStackTrace();

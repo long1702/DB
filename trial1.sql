@@ -168,7 +168,7 @@ INSERT INTO Advertise (AdID, Content, Advertiser) VALUES
 
 CREATE TABLE Comment
 (
-  CmtID						INT unsigned NOT NULL PRIMARY KEY, 
+  CmtID						INT unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT, 
   UserID					INT unsigned NOT NULL,
   ID						INT unsigned NOT NULL,
   TimeStamp					DATETIME NOT NULL,

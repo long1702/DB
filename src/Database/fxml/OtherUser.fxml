@@ -231,7 +231,7 @@
                               </HBox>
                            </children>
                         </VBox>
-                        <Pane prefHeight="550.0" prefWidth="532.0">
+                        <Pane prefHeight="550.0" prefWidth="734.0">
                            <children>
                               <JFXListView fx:id="searchResult" disable="true" onMouseClicked="#onClickedListView" prefHeight="550.0" prefWidth="532.0" visible="false" />
                               <Label fx:id="lblNoResult" layoutX="144.0" layoutY="198.0" prefHeight="27.0" prefWidth="215.0" text="Không tìm thấy kết quả" visible="false" />

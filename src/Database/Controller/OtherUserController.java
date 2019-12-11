@@ -222,7 +222,7 @@ public class OtherUserController implements Initializable {
             ConnectionClass connectionClass = new ConnectionClass();
             Connection con = connectionClass.getConnection();
             try {
-                sql = "CALL pressSubcribe(" + UserID + "," + OtherUserID +");";
+                sql = "CALL pressSubcribe(" + UserID + "," + OtherUserID +",@a);";
                 statement = con.createStatement();
                 statement.executeQuery(sql);
                 btnSubscribe.setText("ĐÃ ĐĂNG KÝ");
@@ -327,7 +327,54 @@ public class OtherUserController implements Initializable {
         }
     }
     public void onClickedListView(MouseEvent mouseEvent) {
+        ListView<Label> list = (ListView<Label>) mouseEvent.getSource();
+        list.setCellFactory(tv->{
+            ListCell<Label> cell = new ListCell<>();
+            cell.setOnMouseClicked(event ->{
+                if ( !cell.isEmpty()) {
+                    Label cellData = cell.getItem();
+                    try {
+                        String CellID = cellData.getId();
 
+                        if(CellID.substring(0,1).equals("V")) {
+                            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../fxml/VideoDisplay.fxml"));
+                            Parent root = (Parent)fxmlLoader.load();
+                            //Get controller of scene2
+                            System.out.println(CellID);
+                            System.out.println(UserID);
+                            VideoDisplayController inputController = fxmlLoader.getController();
+                            inputController.setVideoID(CellID.substring(1,CellID.length()));
+                            inputController.setUserID(UserID);
+                            mainStage.getChildren().setAll(root);
+                            AnchorPane.setTopAnchor(root, 0.0);
+                            AnchorPane.setBottomAnchor(root, 0.0);
+                            AnchorPane.setLeftAnchor(root, 0.0);
+                            AnchorPane.setRightAnchor(root, 0.0);
+                        }
+                        else{
+                            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../fxml/OtherUser.fxml"));
+                            Parent root = (Parent)fxmlLoader.load();
+                            //Get controller of scene2
+                            System.out.println(CellID);
+                            System.out.println(UserID);
+                            OtherUserController inputController = fxmlLoader.getController();
+                            inputController.setOtherUserID(CellID.substring(1,CellID.length()));
+                            inputController.setUserID(UserID);
+                            mainStage.getChildren().setAll(root);
+                            AnchorPane.setTopAnchor(root, 0.0);
+                            AnchorPane.setBottomAnchor(root, 0.0);
+                            AnchorPane.setLeftAnchor(root, 0.0);
+                            AnchorPane.setRightAnchor(root, 0.0);
+                        }
+
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            return cell;
+        });
     }
 
 }

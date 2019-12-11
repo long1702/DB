@@ -35,7 +35,7 @@ public class SignupScreenController implements Initializable {
     private boolean Signupable = true;
     Statement statement;
     String sql;
-
+    public  String UserID = "None";
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         lblWarning1.setVisible(false);
@@ -73,13 +73,8 @@ public class SignupScreenController implements Initializable {
             cs.executeUpdate();
             //sql = "INSERT INTO User (UserID, isRegistered, Name, Gmail, Password, SignUpDate) VALUES (20001, TRUE,"+Name+","+Gmail+","+Pass+","+Date+");";
             //statement.executeUpdate(sql);
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../fxml/LoginScreen.fxml"));
-            Parent root = fxmlLoader.load();
-            mainStage.getChildren().setAll(root);
-            AnchorPane.setTopAnchor(root, 0.0);
-            AnchorPane.setBottomAnchor(root, 0.0);
-            AnchorPane.setLeftAnchor(root, 0.0);
-            AnchorPane.setRightAnchor(root, 0.0);
+            Stage stage = (Stage) btnOK.getScene().getWindow();
+            stage.close();
 
         }
         else {
