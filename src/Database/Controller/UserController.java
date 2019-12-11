@@ -38,7 +38,7 @@ public class UserController implements Initializable {
     @FXML
     VBox vboxDisplay;
     @FXML
-    JFXListView<Label> searchResult,subscribedChannel;
+    JFXListView<Label> searchResult,subscribedChannel,listMyVideo;
     @FXML
     Label lblSubNum,lblUserName;
     Statement statement;
@@ -75,6 +75,8 @@ public class UserController implements Initializable {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../fxml/UploadVid.fxml"));
             Parent root = (Parent) fxmlLoader.load();
+            UpLoadVidController controller = fxmlLoader.getController();
+            controller.setUserID(UserID);
             Stage stage = new Stage();
             stage.setScene(new Scene(root, 600, 400));
             stage.show();
@@ -213,6 +215,23 @@ public class UserController implements Initializable {
                     lbl.setId("U" + resultSet.getString(1));
                     lbl.setGraphic(new ImageView(new Image(new FileInputStream("D:/Study/DB/src/Database/img/User.png"))));
                     subscribedChannel.getItems().add(lbl);
+                }
+            } catch (SQLException | FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            try {
+                sql = "CALL show_VideoUploaded("+UserID+",@a);";
+                statement = con.createStatement();
+                ResultSet resultSet = statement.executeQuery(sql);
+                while (resultSet.next()) {
+                    int a = 0;
+                    if(resultSet.getString(4) != null) {
+                        a = Integer.parseInt(resultSet.getString(4));
+                    }
+                    Label lbl = new Label(resultSet.getString(2) +" \n" + a + " lượt xem");
+                    lbl.setId("V" + resultSet.getString(1));
+                    lbl.setGraphic(new ImageView(new Image(new FileInputStream("D:/Study/DB/src/Database/img/YoutubeVN.png"))));
+                    listMyVideo.getItems().add(lbl);
                 }
             } catch (SQLException | FileNotFoundException e) {
                 e.printStackTrace();

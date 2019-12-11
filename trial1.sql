@@ -39,7 +39,7 @@ INSERT INTO User (UserID, isRegistered) VALUES # Guest
 
 CREATE TABLE Object
 (
-  ID					INT unsigned NOT NULL PRIMARY KEY, 
+  ID					INT unsigned NOT NULL PRIMARY KEY auto_increment, 
   Time 					DATETIME NOT NULL,           
   UserID				INT unsigned NOT NULL
 );

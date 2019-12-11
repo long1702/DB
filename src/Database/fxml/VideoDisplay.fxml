@@ -147,6 +147,15 @@
                                     </JFXButton>
                                  </children>
                               </Pane>
+                              <JFXButton fx:id="btnLater" layoutX="519.0" layoutY="321.0" text=" ">
+                                 <graphic>
+                                    <ImageView fitHeight="25.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../img/time-left.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </JFXButton>
                            </children>
                         </AnchorPane>
                     </content>

@@ -32,7 +32,8 @@ import java.util.ResourceBundle;
 public class VideoDisplayController implements Initializable {
     @FXML
     JFXButton btnLogin,btnUser, btnSignUp, btnBell, btnSearch, btnLike, btnDisLike, btnCmt, btnCancel, btnAuthor,btnMain;
-    JFXButton btnSubscribe;
+    @FXML
+    JFXButton btnSubscribe, btnLater;
     public String UserID = "None";
     Statement statement;
     String sql;
@@ -168,6 +169,56 @@ public class VideoDisplayController implements Initializable {
             }catch (Exception e){
                 e.printStackTrace();
             }
+        });
+        btnLike.setOnMouseClicked(a ->{
+            ConnectionClass connectionClass = new ConnectionClass();
+            Connection con = connectionClass.getConnection();
+            try{
+                sql = "Call pressLikeorDislikeObject(" + UserID + "," + VideoID + ",1,@a);";
+                statement = con.createStatement();
+                statement.executeQuery(sql);
+            }catch(Exception e) {
+                e.printStackTrace();
+            }
+            int b = Integer.parseInt(btnLike.getText())+1;
+            btnLike.setText( b + "");
+            if(btnDisLike.isDisable()){
+                b = Integer.parseInt(btnDisLike.getText())-1;
+                btnDisLike.setText( b + "");
+            }
+            btnDisLike.setDisable(false);
+            btnLike.setDisable(true);
+        });
+        btnDisLike.setOnMouseClicked(a ->{
+            ConnectionClass connectionClass = new ConnectionClass();
+            Connection con = connectionClass.getConnection();
+            try{
+                sql = "Call pressLikeorDislikeObject(" + UserID + "," + VideoID + ",0,@a);";
+                statement = con.createStatement();
+                statement.executeQuery(sql);
+            }catch(Exception e) {
+                e.printStackTrace();
+            }
+            int b = Integer.parseInt(btnDisLike.getText())+1;
+            btnDisLike.setText( b + "");
+            if(btnLike.isDisable()){
+                b = Integer.parseInt(btnLike.getText())-1;
+                btnLike.setText( b + "");
+            }
+            btnLike.setDisable(false);
+            btnDisLike.setDisable(true);
+        });
+        btnLater.setOnMouseClicked(act ->{
+            ConnectionClass connectionClass = new ConnectionClass();
+            Connection con = connectionClass.getConnection();
+            try{
+                sql = "Call addVideotoLater(" + UserID + "," + VideoID + ",@a);";
+                statement = con.createStatement();
+                statement.executeQuery(sql);
+            }catch(Exception e) {
+                e.printStackTrace();
+            }
+            btnLater.setDisable(true);
         });
     }
 

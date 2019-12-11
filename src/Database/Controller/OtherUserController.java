@@ -45,7 +45,7 @@ public class OtherUserController implements Initializable {
     @FXML
     Label lblNoResult,lblUserName,lblSubNum;
     @FXML
-    JFXListView<Label> searchResult, subscribedChannel;
+    JFXListView<Label> searchResult, subscribedChannel,listMyVideo;
     @FXML
     VBox vboxDisplay;
 
@@ -323,6 +323,23 @@ public class OtherUserController implements Initializable {
                     a = "0";
                 }
                 lblSubNum.setText(a + " đã đăng ký");
+            }
+            try {
+                sql = "CALL show_VideoUploaded("+OtherUserID+",@a);";
+                statement = con.createStatement();
+                ResultSet resultSet = statement.executeQuery(sql);
+                while (resultSet.next()) {
+                    int a = 0;
+                    if(resultSet.getString(4) != null) {
+                        a = Integer.parseInt(resultSet.getString(4));
+                    }
+                    Label lbl = new Label(resultSet.getString(2) +" \n" + a + " lượt xem");
+                    lbl.setId("V" + resultSet.getString(1));
+                    lbl.setGraphic(new ImageView(new Image(new FileInputStream("D:/Study/DB/src/Database/img/YoutubeVN.png"))));
+                    listMyVideo.getItems().add(lbl);
+                }
+            } catch (SQLException | FileNotFoundException e) {
+                e.printStackTrace();
             }
         }
     }

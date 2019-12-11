@@ -237,6 +237,7 @@
                               <Label fx:id="lblNoResult" layoutX="144.0" layoutY="198.0" prefHeight="27.0" prefWidth="215.0" text="Không tìm thấy kết quả" visible="false" />
                            </children>
                         </Pane>
+                        <JFXListView fx:id="listMyVideo" layoutX="24.0" layoutY="240.0" onMouseClicked="#onClickedListView" orientation="HORIZONTAL" prefHeight="108.0" prefWidth="698.0" />
                      </children>
                   </Pane>
                </children>
