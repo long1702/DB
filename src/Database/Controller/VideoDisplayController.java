@@ -171,54 +171,149 @@ public class VideoDisplayController implements Initializable {
             }
         });
         btnLike.setOnMouseClicked(a ->{
-            ConnectionClass connectionClass = new ConnectionClass();
-            Connection con = connectionClass.getConnection();
-            try{
-                sql = "Call pressLikeorDislikeObject(" + UserID + "," + VideoID + ",1,@a);";
-                statement = con.createStatement();
-                statement.executeQuery(sql);
-            }catch(Exception e) {
-                e.printStackTrace();
+            if (UserID == "None") {
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../fxml/LoginScreen.fxml"));
+                    Parent root = (Parent) fxmlLoader.load();
+                    Stage stage = new Stage();
+                    stage.setScene(new Scene(root, 450, 300));
+                    stage.show();
+                    LoginScreenController controller = fxmlLoader.getController();
+                    stage.setOnHidden(new EventHandler<WindowEvent>() {
+                        @Override
+                        public void handle(WindowEvent windowEvent) {
+
+                            UserID = controller.UserID;
+                            System.out.println(UserID);
+                            if (!UserID.equals("None")) {
+                                btnLogin.setDisable(true);
+                                btnSignUp.setDisable(true);
+                                btnLogin.setVisible(false);
+                                btnSignUp.setVisible(false);
+                                btnBell.setDisable(false);
+                                btnUser.setDisable(false);
+                                btnBell.setVisible(true);
+                                btnUser.setVisible(true);
+                            }
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-            int b = Integer.parseInt(btnLike.getText())+1;
-            btnLike.setText( b + "");
-            if(btnDisLike.isDisable()){
-                b = Integer.parseInt(btnDisLike.getText())-1;
-                btnDisLike.setText( b + "");
+            else {
+                ConnectionClass connectionClass = new ConnectionClass();
+                Connection con = connectionClass.getConnection();
+                try {
+                    sql = "Call pressLikeorDislikeObject(" + UserID + "," + VideoID + ",1,@a);";
+                    statement = con.createStatement();
+                    statement.executeQuery(sql);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                int b = Integer.parseInt(btnLike.getText()) + 1;
+                btnLike.setText(b + "");
+                if (btnDisLike.isDisable()) {
+                    b = Integer.parseInt(btnDisLike.getText()) - 1;
+                    btnDisLike.setText(b + "");
+                }
+                btnDisLike.setDisable(false);
+                btnLike.setDisable(true);
             }
-            btnDisLike.setDisable(false);
-            btnLike.setDisable(true);
         });
         btnDisLike.setOnMouseClicked(a ->{
-            ConnectionClass connectionClass = new ConnectionClass();
-            Connection con = connectionClass.getConnection();
-            try{
-                sql = "Call pressLikeorDislikeObject(" + UserID + "," + VideoID + ",0,@a);";
-                statement = con.createStatement();
-                statement.executeQuery(sql);
-            }catch(Exception e) {
-                e.printStackTrace();
+            if (UserID == "None") {
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../fxml/LoginScreen.fxml"));
+                    Parent root = (Parent) fxmlLoader.load();
+                    Stage stage = new Stage();
+                    stage.setScene(new Scene(root, 450, 300));
+                    stage.show();
+                    LoginScreenController controller = fxmlLoader.getController();
+                    stage.setOnHidden(new EventHandler<WindowEvent>() {
+                        @Override
+                        public void handle(WindowEvent windowEvent) {
+
+                            UserID = controller.UserID;
+                            System.out.println(UserID);
+                            if (!UserID.equals("None")) {
+                                btnLogin.setDisable(true);
+                                btnSignUp.setDisable(true);
+                                btnLogin.setVisible(false);
+                                btnSignUp.setVisible(false);
+                                btnBell.setDisable(false);
+                                btnUser.setDisable(false);
+                                btnBell.setVisible(true);
+                                btnUser.setVisible(true);
+                            }
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-            int b = Integer.parseInt(btnDisLike.getText())+1;
-            btnDisLike.setText( b + "");
-            if(btnLike.isDisable()){
-                b = Integer.parseInt(btnLike.getText())-1;
-                btnLike.setText( b + "");
+            else {
+                ConnectionClass connectionClass = new ConnectionClass();
+                Connection con = connectionClass.getConnection();
+                try {
+                    sql = "Call pressLikeorDislikeObject(" + UserID + "," + VideoID + ",0,@a);";
+                    statement = con.createStatement();
+                    statement.executeQuery(sql);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                int b = Integer.parseInt(btnDisLike.getText()) + 1;
+                btnDisLike.setText(b + "");
+                if (btnLike.isDisable()) {
+                    b = Integer.parseInt(btnLike.getText()) - 1;
+                    btnLike.setText(b + "");
+                }
+                btnLike.setDisable(false);
+                btnDisLike.setDisable(true);
             }
-            btnLike.setDisable(false);
-            btnDisLike.setDisable(true);
         });
         btnLater.setOnMouseClicked(act ->{
-            ConnectionClass connectionClass = new ConnectionClass();
-            Connection con = connectionClass.getConnection();
-            try{
-                sql = "Call addVideotoLater(" + UserID + "," + VideoID + ",@a);";
-                statement = con.createStatement();
-                statement.executeQuery(sql);
-            }catch(Exception e) {
-                e.printStackTrace();
+            if (UserID == "None") {
+                try {
+                    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../fxml/LoginScreen.fxml"));
+                    Parent root = (Parent) fxmlLoader.load();
+                    Stage stage = new Stage();
+                    stage.setScene(new Scene(root, 450, 300));
+                    stage.show();
+                    LoginScreenController controller = fxmlLoader.getController();
+                    stage.setOnHidden(new EventHandler<WindowEvent>() {
+                        @Override
+                        public void handle(WindowEvent windowEvent) {
+
+                            UserID = controller.UserID;
+                            System.out.println(UserID);
+                            if (!UserID.equals("None")) {
+                                btnLogin.setDisable(true);
+                                btnSignUp.setDisable(true);
+                                btnLogin.setVisible(false);
+                                btnSignUp.setVisible(false);
+                                btnBell.setDisable(false);
+                                btnUser.setDisable(false);
+                                btnBell.setVisible(true);
+                                btnUser.setVisible(true);
+                            }
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }else {
+                ConnectionClass connectionClass = new ConnectionClass();
+                Connection con = connectionClass.getConnection();
+                try {
+                    sql = "Call addVideotoLater(" + UserID + "," + VideoID + ",@a);";
+                    statement = con.createStatement();
+                    statement.executeQuery(sql);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                btnLater.setDisable(true);
             }
-            btnLater.setDisable(true);
         });
     }
 
